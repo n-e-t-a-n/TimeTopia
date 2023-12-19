@@ -15,12 +15,14 @@ async function run() {
   try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+    console.log("Connection established with MondoDB.");
   } catch (error) {
     await client.close()
-    console.log(error)
+    throw new Error(error)
   }
 }
+
 run().catch(console.dir);
 
 export default client;
