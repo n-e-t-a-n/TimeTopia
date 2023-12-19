@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
@@ -13,14 +13,63 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (userData) => {
-    Cookies.set('authToken', { ...userData }, { expires: 7, path: '/' })
+  const register = async (params) => {
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...params })
+      })
 
-    setUser(userData);
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(errorMessage.message);
+      }
+
+      const data = await response.json();
+      const account = data.message;
+
+      if (data.status === 201) {
+        Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' });
+        setUser(account)
+      }
+
+    } catch (error) {
+      throw new Error('Register failed. Please try again.');
+    }
+  }
+
+  const login = async (params) => {
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...params })
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(errorMessage.message);
+      }
+  
+      const data = await response.json();
+      const account = data.message;
+
+      if (data.status === 200) {
+        Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' }) 
+        setUser(account);
+      }
+    } catch (error) {
+      throw new Error('Login failed. Please try again.');
+    }
   };
 
   const logout = () => {
-    Cookies.remove('authToken', { path: '/' }) 
+    Cookies.remove('authToken') 
     setUser(null);
   };
 
