@@ -25,31 +25,25 @@ app.post('/login', async(req, res) => {
   }
 })
 
-app.post('/clients', async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
-    const { username, name, email, ...additionalData } = req.body;
     const collection = await client.db('users').collection('clients');
+    const accountExists = await collection.findOne({ "email": req.body.email });
 
-    const newClient = {
-      username,
-      name,
-      email,
-      ...additionalData
-    };
+    if (accountExists) return res.send({ status: 409, message: 'An account with that email already exists.' });
 
-    const result = await collection.insertOne(newClient);
+    const user = { ...req.body }
+    const result = await collection.insertOne(user);
 
-    if (result.acknowledged) {
-      res.status(201).send({ message: 'Client created successfully!' });
-    } else {
-      throw new Error('Failed to create client.'); // Handle the error appropriately
-    }
+    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: "Account successfully created." });
+    
+    return res.status(500).json({ status: 500, message: 'Failed to create the account' });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: 'Internal server error.' });
+    res.status(500).send({ message: 'Internal server error' });
   }
 });
 
-app.listen( port ,()=>{
-    console.log('server is running at port number 3000')
+app.listen(port ,()=>{
+    console.log(`The server is running at http://localhost:${port}`)
 });
