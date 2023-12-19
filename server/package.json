@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start gql": "node apollo-server.js",
-    "start": "node express-server.js"
+    "start": "nodemon express-server.js"
   },
   "keywords": [],
   "author": "",
