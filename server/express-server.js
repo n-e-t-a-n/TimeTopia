@@ -28,9 +28,13 @@ app.post('/login', async(req, res) => {
 app.post('/register', async (req, res) => {
   try {
     const collection = await client.db('users').collection('clients');
-    const accountExists = await collection.findOne({ "email": req.body.email });
 
-    if (accountExists) return res.send({ status: 409, message: 'An account with that email already exists.' });
+    const accountExists = await collection.findOne({ "email": req.body.email });
+    const usernameExists = await collection.findOne({ "username": req.body.username });
+
+    if (accountExists) return res.send({ status: 409, message: 'That email is already in use.' });
+
+    if (usernameExists) return res.send({ status: 409, message: 'An account with that username already exists.' });
 
     const user = { ...req.body }
     const result = await collection.insertOne(user);
