@@ -31,6 +31,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       const account = data.message;
 
+      console.log(data)
+
       if (data.status === 201) {
         Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' });
         setUser(account)

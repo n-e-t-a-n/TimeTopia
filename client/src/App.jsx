@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from './providers/AuthContext.jsx';
 
-import { Home, Login, Register } from './pages'
+import { Login, Register } from './pages/pre-auth'
+import { Home } from './pages/auth'
+
+const PreAuth = () => {
+  const [isLogin, setIsLogin] = useState(true);
+
+  return isLogin ? <Login setIsLogin={ setIsLogin }/> : <Register setIsLogin={ setIsLogin }/>;
+}
 
 const App = () => {
   const { user } = useAuth();
@@ -9,7 +16,7 @@ const App = () => {
   return (
     <>
       <h1>
-        {!user ? <Register /> : <Home />}
+        {!user ? <PreAuth /> : <Home />}
       </h1>
     </>
   );
