@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from './providers/AuthContext.jsx';
 
-import { Home, Login } from './pages'
+import { Home, Login, Register } from './pages'
 
 const App = () => {
   const { user } = useAuth();
@@ -9,7 +9,7 @@ const App = () => {
   return (
     <>
       <h1>
-        {!user ? <Login /> : <Home />}
+        {!user ? <Register /> : <Home />}
       </h1>
     </>
   );
