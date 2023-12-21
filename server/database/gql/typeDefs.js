@@ -1,14 +1,13 @@
 const typeDefs = `
   type Event {
     _id: ID!
-    email: String!
     name: String!
     startDate: String!
     endDate: String!
   }
 
   type Query {
-    events: [Event]
+    events(email: String!): [Event]
   }
 
   type Mutation {
