@@ -55,7 +55,7 @@ const Register = ({ setIsLogin }) => {
           className="img-fluid p-3"
           alt= "Welcome to TimeTopia... where TIME is in the palm of YOUR hands"
         />
-        <h1 className="mt-1">where TIME is in the palm of YOUR hands</h1>
+        <h2 className="mt-1">where TIME is in the palm of YOUR hands</h2>
       </div>
       </MDBCol>
 
