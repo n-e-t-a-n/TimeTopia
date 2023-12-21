@@ -43,7 +43,7 @@ const Login = ({ setIsLogin }) => {
           <img
             src="../../img/Time_topia_smol.png"
             className="img-fluid p-3"
-            alt= "Welcome to TimeTopia... Where Time is in the palm of your hands"
+            alt= "Welcome to TimeTopia... where TIME is in the palm of YOUR hands"
           />
         </MDBCol>
 
