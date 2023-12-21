@@ -1,5 +1,6 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import '../../pages/pre-auth/pre_auth_design/forms.css';
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -11,10 +12,11 @@ const CustomInput = ({ field, form, ...props }) => (
   <MDBInput
     {...field}
     {...props}
-    wrapperClass='mb-4'
+    wrapperClass='mb-2'
     label={props.label}
     id={props.id}
     type={props.type}
+    className="p-4"
   />
 );
 
@@ -32,16 +34,16 @@ const Login = ({ setIsLogin }) => {
   const { login } = useAuth();
 
   return (
-    <MDBContainer fluid className="p-3 my-5 h-100">
+    <MDBContainer fluid>
 
-      <MDBRow className="h-100 align-items-center">
+      <MDBRow className="p-3 my-5 m-1 align-items-center">
 
         {/* Left column container with background */}
         <MDBCol md='6' className="order-1 order-md-1">
           <img
             src="../../img/Time_topia_smol.png"
-            className="img-fluid"
-            alt="Sample image"
+            className="img-fluid p-3"
+            alt= "Welcome to TimeTopia... Where Time is in the palm of your hands"
           />
         </MDBCol>
 
@@ -84,7 +86,7 @@ const Login = ({ setIsLogin }) => {
 
                 <div className="text-center lg:text-left">
                   {/* Submit button */}
-                  <MDBBtn className="mb-4 w-100" size="lg" type="submit">
+                  <MDBBtn className="mb-4 w-100 yellow-scheme" size="lg" type="submit">
                     Login
                   </MDBBtn>
                 </div>
@@ -93,8 +95,8 @@ const Login = ({ setIsLogin }) => {
 
             {/* Register button */}
             <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-              <p className="mb-0">Don't have an account?</p>
-              <MDBBtn outline className='mx-2' color='danger' onClick={() => setIsLogin(false)}>
+              <p className="mb-0 pe-4">Don't have an account?</p>
+              <MDBBtn outline className='center text' color='warning' onClick={() => setIsLogin(false)}>
                 Register
               </MDBBtn>
             </div>
@@ -102,7 +104,14 @@ const Login = ({ setIsLogin }) => {
         </MDBCol>
 
       </MDBRow>
-
+      <MDBRow>
+        <div className="text-center py-4 px-4 px-xl-5 green-scheme">
+          <div className="text-white mb-3 mb-md-0">
+            <p>Time at the Palm of your hands</p>
+            <p>Copyright © 2023. All rights reserved.</p>
+          </div>
+        </div>
+      </MDBRow>
     </MDBContainer>
   );
 };
