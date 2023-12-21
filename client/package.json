@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@bryntum/calendar": "npm:@bryntum/calendar-trial@^5.6.3",
+    "@bryntum/calendar-react": "^5.6.3",
     "formik": "^2.4.5",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
