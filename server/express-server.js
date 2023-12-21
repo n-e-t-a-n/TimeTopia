@@ -6,11 +6,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({ 
+  origin: ["http://localhost:5173"], 
+  credentials: true }
+))
 
 app.post('/login', async(req, res) => {
   try {
-    const collection = await client.db('users').collection('clients');
+    const collection = await client.db('timetopia').collection('users');
     const docs = await collection.find({ email: req.body.email }).toArray();
 
     if (docs.length === 0) return res.send({ status: 404, message: 'No user found with that email' });
@@ -27,7 +30,7 @@ app.post('/login', async(req, res) => {
 
 app.post('/register', async (req, res) => {
   try {
-    const collection = await client.db('users').collection('clients');
+    const collection = await client.db('timetopia').collection('users');
 
     const accountExists = await collection.findOne({ "email": req.body.email });
     const usernameExists = await collection.findOne({ "username": req.body.username });
