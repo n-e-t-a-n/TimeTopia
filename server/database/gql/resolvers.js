@@ -2,22 +2,25 @@ import client from '../mongo.js';
 
 const resolvers = {
   Query: {
-    events: async () => {
+    events: async (_, args) => {
       try {
-        const events = await client.db('timetopia').collection('events').find().toArray();
-        return events;
+        const { email } = args;
+
+        const currentUser = await client.db('timetopia').collection('users').findOne({ email });
+        
+        return currentUser["schedules"];
       } catch (error) {
         console.error('Error fetching events:', error);
         throw new Error('Failed to fetch events');
-      }
+      } 
     },
   },
   Mutation: {
-    createEvent: async (_, params) => {
+    createEvent: async (_, args) => {
       try {
-        const result = await db.collection('events').insertOne(params);
+        const result = await db.collection('events').insertOne(args);
         
-        if (result["acknowledged"] === true) return params;
+        if (result["acknowledged"] === true) return args;
         
         throw new Error('Failed to create event');
       } catch (error) {
