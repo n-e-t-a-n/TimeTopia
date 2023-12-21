@@ -103,7 +103,7 @@ const Register = ({ setIsLogin }) => {
             <div className="text-center lg:text-left">
             {/* Submit button */}
               <MDBBtn className="mb-4 w-100 yellow-scheme" size="lg" type="submit">
-                Login
+                Register
               </MDBBtn>
             </div>
            </Form>
