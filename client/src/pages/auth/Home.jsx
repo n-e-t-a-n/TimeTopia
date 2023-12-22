@@ -5,8 +5,8 @@ import { CrudManager } from '@bryntum/calendar';
 import '@bryntum/calendar/calendar.stockholm.css';
 
 const query = `
-  query events($email: String!) {
-    events(email: $email) {
+  query getEvents($email: String!) {
+    getEvents(email: $email) {
       _id
       name
       startDate
@@ -42,7 +42,7 @@ const Home = () => {
                 });
 
                 const data = await response.json();
-                setEvents(data["data"]["events"]);
+                setEvents(data["data"]["getEvents"]);
             } catch (error) {
                 console.error('Error fetching events:', error);
             }

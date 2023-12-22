@@ -7,7 +7,7 @@ const typeDefs = `
   }
 
   type Query {
-    events(email: String!): [Event]
+    getEvents(email: String!): [Event]
   }
 
   type Mutation {

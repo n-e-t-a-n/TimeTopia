@@ -2,7 +2,7 @@ import client from '../mongo.js';
 
 const resolvers = {
   Query: {
-    events: async (_, args) => {
+    getEvents: async (_, args) => {
       try {
         const { email } = args;
 
