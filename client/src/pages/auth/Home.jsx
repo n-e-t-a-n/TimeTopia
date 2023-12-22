@@ -9,7 +9,13 @@ const Home = () => {
         "update": [],
         "remove": [],
         "dataset": []
-    }
+    };
+
+    let addIDs = [];
+    let updateIDs = [];
+    let removeIDs = [];
+
+    const [existingEvents, setExistingEvents] = useState([]);
 
     const { user, logout } = useAuth();
 
@@ -21,18 +27,23 @@ const Home = () => {
     const query = `
         query getEvents($email: String!) {
             getEvents(email: $email) {
-            id
-            name
-            startDate
-            endDate
+                id
+                name
+                startDate
+                endDate
             }
         }
     `; 
 
+    const createEventMutation = `
+        mutation CreateEvent($id: ID!, $email: String!, $name: String!, $startDate: String!, $endDate: String!) {
+            createEvent(id: $id, email: $email, name: $name, startDate: $startDate, endDate: $endDate)
+        }
+    `;
+
     const variables = {
         email: JSON.parse(user)["email"]
     }
-
     
     useEffect(() => {
         const fetchEvents = async () => {
@@ -51,6 +62,9 @@ const Home = () => {
                 const data = await response.json();
                 setEvents(data["data"]["getEvents"]);
 
+                data["data"]["getEvents"].map((obj) => {
+                    setExistingEvents(existingEvents => [...existingEvents, obj["id"]])
+                });
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -58,6 +72,13 @@ const Home = () => {
 
         fetchEvents();
     }, []);
+
+    const getUnique = (arr) => {
+        var seen = {};
+        return arr.filter(function(item) {
+            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+        });
+    };
 
     const generateUpdate = ({ _, action, records }) => {
         const unixStartDate = records[0]?._startDate.getTime();
@@ -97,14 +118,56 @@ const Home = () => {
         eventUpdates["update"] = latestUpdates;
 
         const removeIds = new Set(removeArray.map(obj => obj.id));
-        
+
         eventUpdates["add"] = eventUpdates["add"].filter(obj => !removeIds.has(obj.id));
         eventUpdates["update"] = eventUpdates["update"].filter(obj => !removeIds.has(obj.id));
-      };
+    };
 
-    const saveUpdates = (updates) => {
-        processUpdates()
-        console.log(eventUpdates)
+    const saveIDs = () => {
+        addIDs = eventUpdates["add"].map(obj => obj["id"])
+        updateIDs = eventUpdates["update"].map(obj => obj["id"])
+        removeIDs = eventUpdates["remove"].map(obj => obj["id"])
+    }
+
+    const logUpdates = () => {
+        processUpdates();
+        saveIDs();
+
+        console.log(addIDs, updateIDs, removeIDs)
+    }
+
+    const saveUpdates = () => {
+        processUpdates();
+        saveIDs();
+
+        eventUpdates["update"].map(async (event) => {
+            try {
+                const uniqueExistingEvents = getUnique(existingEvents);
+
+                if (!uniqueExistingEvents.includes(event["id"])) {
+                    console.log(existingEvents)
+                    console.log(event)
+
+                    const email = JSON.parse(user)["email"]
+                    const payload = { email, ...event }
+
+                    await fetch('http://localhost:4000/graphql', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: createEventMutation,
+                            variables: payload
+                        }),
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        });
+
+        console.log(removeIDs)
     }
     
     return (
@@ -121,7 +184,9 @@ const Home = () => {
             />
 
             <button onClick={logout}>Logout</button>
-            <button onClick={() => saveUpdates(eventUpdates)}>Log Updates</button>
+            <button onClick={() => logUpdates(eventUpdates)}>Log Updates</button>
+            <button onClick={() => saveUpdates(eventUpdates)}>Save Updates</button>
+            <button onClick={() => {console.log(getUnique(existingEvents))}}>Show Existing</button>
         </>
     );
 };
