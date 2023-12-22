@@ -170,6 +170,32 @@ const Home = () => {
             }
         });
 
+        eventUpdates["remove"].map(async (event) => {
+            try {
+                const uniqueExistingEvents = getUnique(existingEvents);
+
+                if (uniqueExistingEvents.includes(event["id"])) {
+                    const email = JSON.parse(user)["email"]
+
+                    await fetch('http://localhost:4000/graphql', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: `mutation DeleteEvent($id: ID!, $email: String!) {
+                                        deleteEvent(id: $id, email: $email)
+                                    }
+                                `,
+                            variables: { email: email, id: event.id }
+                        }),
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        });
+
         console.log(removeIDs)
     }
     
