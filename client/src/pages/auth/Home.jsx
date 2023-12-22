@@ -1,37 +1,38 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../providers/AuthContext';
 import { BryntumCalendar, BryntumCalendarProjectModel } from '@bryntum/calendar-react';
-import { CrudManager } from '@bryntum/calendar';
 import '@bryntum/calendar/calendar.stockholm.css';
-
-const query = `
-  query getEvents($email: String!) {
-    getEvents(email: $email) {
-      _id
-      name
-      startDate
-      endDate
-    }
-  }
-`;
-
-const variables = {
-    email: 'test@test.com',
-};
 
 const Home = () => {
     const eventUpdates = {
         "add": [],
         "update": [],
-        "remove": []
+        "remove": [],
+        "dataset": []
     }
 
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
 
     const calendar = useRef();
     const project = useRef();
 
     const [events, setEvents] = useState([]);
+
+    const query = `
+        query getEvents($email: String!) {
+            getEvents(email: $email) {
+            id
+            name
+            startDate
+            endDate
+            }
+        }
+    `; 
+
+    const variables = {
+        email: JSON.parse(user)["email"]
+    }
+
     
     useEffect(() => {
         const fetchEvents = async () => {
@@ -49,6 +50,7 @@ const Home = () => {
 
                 const data = await response.json();
                 setEvents(data["data"]["getEvents"]);
+
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -57,7 +59,7 @@ const Home = () => {
         fetchEvents();
     }, []);
 
-    const syncData = ({ store, action, records }) => {
+    const generateUpdate = ({ _, action, records }) => {
         const unixStartDate = records[0]?._startDate.getTime();
         const unixEndDate = records[0]?._endDate.getTime();
 
@@ -71,15 +73,38 @@ const Home = () => {
             endDate: endDate
         }
 
-        console.log(update)
+        eventUpdates[action].push(update);
     }
 
-    const processUpdates = (updates) => {
+    const processUpdates = () => {
+        const addArray = eventUpdates["add"];
+        const updateArray = eventUpdates["update"];
+        const removeArray = eventUpdates["remove"];
 
-    }
+        const addIdsToRemove = new Set(updateArray.map(obj => obj.id));
+
+        const filteredAddArray = addArray.filter(obj => !addIdsToRemove.has(obj.id));
+        eventUpdates["add"] = filteredAddArray;
+      
+        const latestUpdates = Array.from(new Set(updateArray.map(obj => obj.id))).map(id => {
+          const updatesWithId = updateArray.filter(obj => obj.id === id);
+          const latestUpdate = updatesWithId.reduce((latest, current) => {
+            return latest.timestamp > current.timestamp ? latest : current;
+          });
+          return latestUpdate;
+        });
+
+        eventUpdates["update"] = latestUpdates;
+
+        const removeIds = new Set(removeArray.map(obj => obj.id));
+        
+        eventUpdates["add"] = eventUpdates["add"].filter(obj => !removeIds.has(obj.id));
+        eventUpdates["update"] = eventUpdates["update"].filter(obj => !removeIds.has(obj.id));
+      };
 
     const saveUpdates = (updates) => {
-        console.log(updates)
+        processUpdates()
+        console.log(eventUpdates)
     }
     
     return (
@@ -92,7 +117,7 @@ const Home = () => {
             <BryntumCalendar 
                 ref={calendar} 
                 project={project} 
-                onDataChange={syncData}
+                onDataChange={generateUpdate}
             />
 
             <button onClick={logout}>Logout</button>
