@@ -20,6 +20,12 @@ const variables = {
 };
 
 const Home = () => {
+    const eventUpdates = {
+        "add": [],
+        "update": [],
+        "remove": []
+    }
+
     const { logout } = useAuth();
 
     const calendar = useRef();
@@ -52,15 +58,28 @@ const Home = () => {
     }, []);
 
     const syncData = ({ store, action, records }) => {
-        console.log(`${store.id} changed. The action was: ${action}`);
-    
         const unixStartDate = records[0]?._startDate.getTime();
         const unixEndDate = records[0]?._endDate.getTime();
 
         const startDate = new Date(unixStartDate)
         const endDate = new Date(unixEndDate)
 
-        console.log(startDate, endDate)
+        const update = {
+            id: records[0]?.data.id,
+            name: records[0]?.name,
+            startDate: startDate,
+            endDate: endDate
+        }
+
+        console.log(update)
+    }
+
+    const processUpdates = (updates) => {
+
+    }
+
+    const saveUpdates = (updates) => {
+        console.log(updates)
     }
     
     return (
@@ -77,6 +96,7 @@ const Home = () => {
             />
 
             <button onClick={logout}>Logout</button>
+            <button onClick={() => saveUpdates(eventUpdates)}>Log Updates</button>
         </>
     );
 };
