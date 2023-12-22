@@ -1,5 +1,4 @@
 import client from '../mongo.js';
-import { ObjectId } from 'mongodb';
 
 const resolvers = {
   Query: {
@@ -10,6 +9,7 @@ const resolvers = {
         const currentUser = await client.db('timetopia').collection('users').findOne({ email });
         
         return currentUser["schedules"];
+
       } catch (error) {
         console.error('Error fetching events:', error);
         throw new Error('Failed to fetch events');
@@ -20,7 +20,7 @@ const resolvers = {
     createEvent: async (_, args) => {
       try {
         const { email, ...eventData } = args;
-        const schedule = { ...eventData, _id: new ObjectId() }
+        const schedule = { ...eventData }
 
         const currentUser = await client.db('timetopia').collection('users').findOne({ email });
 
@@ -35,7 +35,6 @@ const resolvers = {
         );
       
         if (result.modifiedCount === 1) {
-          console.log('New event added successfully');
           return true;
         }
 
@@ -46,6 +45,7 @@ const resolvers = {
         throw new Error('Failed to create event');
       }
     },
+
   },
 };
 
