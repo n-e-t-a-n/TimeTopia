@@ -23,27 +23,6 @@ const Home = () => {
     const project = useRef();
 
     const [events, setEvents] = useState([]);
-
-    const query = `
-        query getEvents($email: String!) {
-            getEvents(email: $email) {
-                id
-                name
-                startDate
-                endDate
-            }
-        }
-    `; 
-
-    const createEventMutation = `
-        mutation CreateEvent($id: ID!, $email: String!, $name: String!, $startDate: String!, $endDate: String!) {
-            createEvent(id: $id, email: $email, name: $name, startDate: $startDate, endDate: $endDate)
-        }
-    `;
-
-    const variables = {
-        email: JSON.parse(user)["email"]
-    }
     
     useEffect(() => {
         const fetchEvents = async () => {
@@ -54,8 +33,17 @@ const Home = () => {
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        query,
-                        variables
+                        query: `
+                            query getEvents($email: String!) {
+                                getEvents(email: $email) {
+                                    id
+                                    name
+                                    startDate
+                                    endDate
+                                }
+                            }
+                        `,
+                        variables: { email: JSON.parse(user)["email"] }
                     }),
                 });
 
@@ -133,7 +121,7 @@ const Home = () => {
         processUpdates();
         saveIDs();
 
-        console.log(addIDs, updateIDs, removeIDs)
+        console.log(eventUpdates)
     }
 
     const saveUpdates = () => {
@@ -144,12 +132,8 @@ const Home = () => {
             try {
                 const uniqueExistingEvents = getUnique(existingEvents);
 
-                if (!uniqueExistingEvents.includes(event["id"])) {
-                    console.log(existingEvents)
-                    console.log(event)
-
+                if (uniqueExistingEvents.includes(event["id"])) {
                     const email = JSON.parse(user)["email"]
-                    const payload = { email, ...event }
 
                     await fetch('http://localhost:4000/graphql', {
                         method: 'POST',
@@ -157,8 +141,27 @@ const Home = () => {
                         'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            query: createEventMutation,
-                            variables: payload
+                            query: `mutation UpdateEvent($id: ID!, $email: String!, $name: String!, $startDate: String!, $endDate: String!) {
+                                        updateEvent(id: $id, email: $email, name: $name, startDate: $startDate, endDate: $endDate)
+                                    }
+                                `,
+                            variables: { email, ...event }
+                        }),
+                    });
+                } else {
+                    const email = JSON.parse(user)["email"] 
+
+                    await fetch('http://localhost:4000/graphql', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: `mutation CreateEvent($id: ID!, $email: String!, $name: String!, $startDate: String!, $endDate: String!) {
+                                        createEvent(id: $id, email: $email, name: $name, startDate: $startDate, endDate: $endDate)
+                                    }
+                                `,
+                            variables: { email, ...event }
                         }),
                     });
                 }
