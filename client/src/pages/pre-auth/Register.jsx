@@ -1,6 +1,9 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import '../../pages/pre-auth/pre_auth_design/forms.css';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -18,7 +21,7 @@ const CustomInput = ({ field, form, ...props }) => (
     type={props.type}
     className="p-4"
   />
-);
+)
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -73,10 +76,27 @@ const Register = ({ setIsLogin }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          register(values);
+        // onSubmit={(values, { setSubmitting }) => {
+        //   register(values);
+        //   setSubmitting(false);
+        // }}
+        onSubmit={async (values, { setSubmitting })  => {
+          try {
+            const response = await register(values);
+        
+            if (response && response.message) {
+              toast.success(response.message);
+            }
+          } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+              toast.error(error.response.data.message);
+            } else {
+              toast.error('An error occurred');
+            }
+          }
+      
           setSubmitting(false);
-        }}
+          }}
       >
         <Form>
           {/* Email input */}
@@ -128,6 +148,7 @@ const Register = ({ setIsLogin }) => {
             </div>
           </div>
         </MDBRow>
+      <ToastContainer />
     </MDBContainer>
   );
 };
