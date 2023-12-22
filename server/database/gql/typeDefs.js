@@ -23,7 +23,8 @@ const typeDefs = `
                 startDate: String!, 
                 endDate: String!): Boolean
 
-    deleteEvent(id: ID!): Boolean                
+    deleteEvent(id: ID!,
+                email: String!): Boolean                
   }
 `;
 
