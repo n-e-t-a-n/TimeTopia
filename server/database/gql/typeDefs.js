@@ -1,6 +1,6 @@
 const typeDefs = `
   type Event {
-    _id: ID!
+    id: ID!
     name: String!
     startDate: String!
     endDate: String!
@@ -11,7 +11,17 @@ const typeDefs = `
   }
 
   type Mutation {
-    createEvent(email: String!, name: String!, startDate: String!, endDate: String!): Boolean
+    createEvent(email: String!, 
+                name: String!, 
+                startDate: String!, 
+                endDate: String!): Boolean
+
+    updateEvent(id: ID!, 
+                name: String!, 
+                startDate: String!, 
+                endDate: String!): Boolean
+
+    deleteEvent(id: ID!): Boolean                
   }
 `;
 
