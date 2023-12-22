@@ -13,4 +13,4 @@ const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
   
-console.log(`The server is running at ${url}`);
+console.log(`Apollo server is running at ${url}`);

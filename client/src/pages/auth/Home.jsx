@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../providers/AuthContext';
 import { BryntumCalendar, BryntumCalendarProjectModel } from '@bryntum/calendar-react';
+import { CrudManager } from '@bryntum/calendar';
 import '@bryntum/calendar/calendar.stockholm.css';
 
 const query = `
@@ -25,7 +26,7 @@ const Home = () => {
     const project = useRef();
 
     const [events, setEvents] = useState([]);
-
+    
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -49,6 +50,18 @@ const Home = () => {
 
         fetchEvents();
     }, []);
+
+    const syncData = ({ store, action, records }) => {
+        console.log(`${store.id} changed. The action was: ${action}`);
+    
+        const unixStartDate = records[0]?._startDate.getTime();
+        const unixEndDate = records[0]?._endDate.getTime();
+
+        const startDate = new Date(unixStartDate)
+        const endDate = new Date(unixEndDate)
+
+        console.log(startDate, endDate)
+    }
     
     return (
         <>
@@ -57,7 +70,11 @@ const Home = () => {
                 events={events}
             />
 
-            <BryntumCalendar ref={calendar} project={project} />
+            <BryntumCalendar 
+                ref={calendar} 
+                project={project} 
+                onDataChange={syncData}
+            />
 
             <button onClick={logout}>Logout</button>
         </>
