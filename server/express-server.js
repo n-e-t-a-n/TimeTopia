@@ -20,7 +20,9 @@ app.post('/login', async(req, res) => {
     
     if (docs[0]["password"] != req.body.password) return res.send({ status: 401, message: 'Incorrect password. '})
 
-    return res.send({ status: 200, message: docs[0] })
+    const { email, name } = docs[0]
+
+    return res.send({ status: 200, message: { email, name } })
 
   } catch (error) {
     console.error(error);
@@ -42,7 +44,9 @@ app.post('/register', async (req, res) => {
     const user = { ...req.body }
     const result = await collection.insertOne({ ...user, schedules:[] });
 
-    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: { ...user, schedules:[] }});
+    const { email, name } = user;
+
+    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: { email, name }});
     
     return res.status(500).json({ status: 500, message: 'Failed to create the account' });
   } catch (error) {
