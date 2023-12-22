@@ -1,4 +1,5 @@
 import client from '../mongo.js';
+import { ObjectId } from 'mongodb';
 
 const resolvers = {
   Query: {
@@ -18,11 +19,28 @@ const resolvers = {
   Mutation: {
     createEvent: async (_, args) => {
       try {
-        const result = await db.collection('events').insertOne(args);
-        
-        if (result["acknowledged"] === true) return args;
-        
-        throw new Error('Failed to create event');
+        const { email, ...eventData } = args;
+        const schedule = { ...eventData, _id: new ObjectId() }
+
+        const currentUser = await client.db('timetopia').collection('users').findOne({ email });
+
+        if (!currentUser) {
+          console.log("Something went wrong with the user's email")
+          return false;
+        }
+
+        const result = await client.db('timetopia').collection('users').updateOne(
+          { email: email },
+          { $push: { schedules: schedule } }
+        );
+      
+        if (result.modifiedCount === 1) {
+          console.log('New event added successfully');
+          return true;
+        }
+
+        console.log('User not found or schedule not added');
+        return false;
       } catch (error) {
         console.error('Error creating event:', error);
         throw new Error('Failed to create event');
