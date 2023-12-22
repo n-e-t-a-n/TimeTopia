@@ -42,7 +42,7 @@ app.post('/register', async (req, res) => {
     const user = { ...req.body }
     const result = await collection.insertOne({ ...user, schedules:[] });
 
-    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: "Account successfully created." });
+    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: { ...user, schedules:[] }});
     
     return res.status(500).json({ status: 500, message: 'Failed to create the account' });
   } catch (error) {
