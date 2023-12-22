@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start gql": "node apollo-server.js",
-    "start": "nodemon express-server.js"
+    "start-gql": "nodemon apollo-server.js",
+    "start-exp": "nodemon express-server.js"
   },
   "keywords": [],
   "author": "",

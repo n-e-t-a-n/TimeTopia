@@ -8,8 +8,8 @@ const port = process.env.PORT || 3000;
 app.use(express.json())
 app.use(cors({ 
   origin: ["http://localhost:5173"], 
-  credentials: true }
-))
+  credentials: true 
+}))
 
 app.post('/login', async(req, res) => {
   try {
@@ -40,9 +40,9 @@ app.post('/register', async (req, res) => {
     if (usernameExists) return res.send({ status: 409, message: 'An account with that username already exists.' });
 
     const user = { ...req.body }
-    const result = await collection.insertOne(user);
+    const result = await collection.insertOne({ ...user, schedules:[] });
 
-    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: "Account successfully created." });
+    if (result["acknowledged"] === true) return res.status(201).json({ status: 201, message: { ...user, schedules:[] }});
     
     return res.status(500).json({ status: 500, message: 'Failed to create the account' });
   } catch (error) {
@@ -52,5 +52,5 @@ app.post('/register', async (req, res) => {
 });
 
 app.listen(port ,()=>{
-    console.log(`The server is running at http://localhost:${port}`)
+    console.log(`Express server is running at http://localhost:${port}`)
 });
