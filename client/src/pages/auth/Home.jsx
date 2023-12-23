@@ -154,13 +154,6 @@ const Home = () => {
         setRemoveIDs(eventUpdates["remove"].map(obj => obj["id"]))
     }
 
-    const logUpdates = () => {
-        processUpdates();
-        saveIDs();
-
-        console.log(eventUpdates)
-    }
-
     const saveUpdates = () => {
         processUpdates();
         saveIDs();
