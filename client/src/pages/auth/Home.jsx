@@ -57,7 +57,33 @@ const Home = () => {
                 try {
                     const parsedJson = JSON.parse(e.target.result);
                     
-                    console.log(parsedJson)
+                    const data = parsedJson["data"];
+
+                    data.map(async (event) => {
+                        try {
+                            const uniqueExistingEvents = getUnique(existingEvents);
+            
+                            if (!uniqueExistingEvents.includes(event["id"])) {
+                                const email = JSON.parse(user)["email"] 
+            
+                                await fetch('http://localhost:4000/graphql', {
+                                    method: 'POST',
+                                    headers: {
+                                    'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        query: `mutation CreateEvent($id: ID!, $email: String!, $name: String!, $startDate: String!, $endDate: String!) {
+                                                    createEvent(id: $id, email: $email, name: $name, startDate: $startDate, endDate: $endDate)
+                                                }
+                                            `,
+                                        variables: { email, ...event }
+                                    }),
+                                });
+                            }
+                        } catch (error) {
+                            console.error('Error fetching events:', error);
+                        }
+                    });
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
                 }
@@ -65,6 +91,20 @@ const Home = () => {
             reader.readAsText(file);
         }
     };
+
+    const handleDownload = (data) => {
+        const jsonData = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+    
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'downloadedData.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
 
     const createDialogue = (fn, action) => {
         confirmAlert({
@@ -306,7 +346,7 @@ const Home = () => {
                                     </MDBBtn>
                                 </MDBNavbarItem>
                                 <MDBNavbarItem className='active ms-1'>
-                                    <MDBBtn size="sm" type='button' >
+                                    <MDBBtn size="sm" type='button' onClick={() => handleDownload({ "data": events })}>
                                         Export
                                     </MDBBtn>
                                 </MDBNavbarItem>
@@ -326,6 +366,8 @@ const Home = () => {
                     </MDBCollapse>
                 </MDBContainer>
             </MDBNavbar>
+
+            <button onClick={() => console.log(getUnique(existingEvents))}>TEST</button>
         </>
     );
 };
