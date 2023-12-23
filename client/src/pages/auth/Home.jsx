@@ -314,11 +314,6 @@ const Home = () => {
             <MDBNavbar fixed='bottom' expand='lg' dark bgColor='dark'>
                 <MDBContainer fluid>
                 <MDBNavbarBrand>
-                    <img
-                        src="../../img/Time_topia-wt-logo.png"
-                        className="img-smaller p-0"
-                        style={{ width: 'auto', height: '30px' }}
-                    />
                     TimeTopia
                 </MDBNavbarBrand>
                     <MDBNavbarToggler
