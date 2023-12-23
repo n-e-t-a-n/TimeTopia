@@ -45,6 +45,27 @@ const Home = () => {
     const [events, setEvents] = useState([]);
     const [originalEvents, setOriginalEvents] = useState([]);
 
+    const fileInputRef = React.createRef();
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                try {
+                    const parsedJson = JSON.parse(e.target.result);
+                    
+                    console.log(parsedJson)
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+    };
+
     const createDialogue = (fn, action) => {
         confirmAlert({
           title: `${action} all unsaved events.`,
@@ -232,6 +253,14 @@ const Home = () => {
     
     return (
         <>
+            <input
+                type="file"
+                accept=".json"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+            />
+
             <BryntumCalendarProjectModel
                 ref={project}
                 events={events}
@@ -272,7 +301,7 @@ const Home = () => {
                         </MDBNavbarNav >
                         <MDBNavbarNav center className='mb-2 mb-lg-0'>
                                 <MDBNavbarItem className='active ms-1'>
-                                    <MDBBtn size="sm" type='button'>
+                                    <MDBBtn size="sm" type='button' onClick={() => fileInputRef.current.click()}>
                                         Import
                                     </MDBBtn>
                                 </MDBNavbarItem>
@@ -297,7 +326,6 @@ const Home = () => {
                     </MDBCollapse>
                 </MDBContainer>
             </MDBNavbar>
-
         </>
     );
 };
