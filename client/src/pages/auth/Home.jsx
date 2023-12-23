@@ -1,9 +1,27 @@
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css"
+
+
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../providers/AuthContext';
 import { BryntumCalendar, BryntumCalendarProjectModel } from '@bryntum/calendar-react';
 import '@bryntum/calendar/calendar.stockholm.css';
 
+import {
+  MDBNavbar,
+  MDBContainer,
+  MDBBtn,
+  MDBIcon,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBNavbarToggler,
+  MDBNavbarBrand,
+  MDBCollapse
+} from 'mdb-react-ui-kit';
+
 const Home = () => {
+    const [openNavColorSecond, setOpenNavColorSecond] = useState(false);
     const eventUpdates = {
         "add": [],
         "update": [],
@@ -209,9 +227,45 @@ const Home = () => {
                 project={project} 
                 onDataChange={generateUpdate}
             />
+            <MDBNavbar fixed='bottom' expand='lg' dark bgColor='dark'>
+                <MDBContainer fluid>
+                <MDBNavbarBrand>
+                    <img
+                        src="../../img/Time_topia-wt-logo.png"
+                        className="img-smaller p-0"
+                        style={{ width: 'auto', height: '30px' }}
+                    />
+                    TimeTopia
+                </MDBNavbarBrand>
+                    <MDBNavbarToggler
+                        type='button'
+                        data-target='#navbarColor02'
+                        aria-controls='navbarColor02'
+                        aria-expanded='false'
+                        aria-label='Toggle navigation'
+                        onClick={() => setOpenNavColorSecond(!openNavColorSecond)}
+                    >
+                        <MDBIcon icon='bars' fas />
+                    </MDBNavbarToggler>
+                    <MDBCollapse open={openNavColorSecond} navbar id='navbarColor02'>
+                        <MDBNavbarNav className='mb-2 mb-lg-0'>
+                        <MDBNavbarItem className='active'>
+                                    <MDBBtn outline color="danger" className='me-2' type='button'onClick={logout}>
+                                        Logout
+                                    </MDBBtn>
+                                </MDBNavbarItem>
+                        </MDBNavbarNav>
+                        <MDBNavbarNav center className='me-auto mb-2 mb-lg-0'>
+                            <MDBNavbarItem className='active'>
+                                <MDBBtn size="sm" type='button' onClick={() => saveUpdates(eventUpdates)}>
+                                    Save
+                                </MDBBtn>
+                            </MDBNavbarItem>
+                        </MDBNavbarNav>
+                    </MDBCollapse>
+                </MDBContainer>
+            </MDBNavbar>
 
-            <button onClick={logout}>Logout</button>
-            <button onClick={() => saveUpdates(eventUpdates)}>Save Updates</button>
         </>
     );
 };
