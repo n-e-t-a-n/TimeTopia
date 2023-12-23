@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -13,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const register = async (params) => {
+  const register = async (params, setIsLogin) => {
     try {
       const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
@@ -24,14 +27,21 @@ export const AuthProvider = ({ children }) => {
       })
 
       const data = await response.json();
-      const account = data.message;
 
       if (data.status === 201) {
-        Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' });
-        setUser(JSON.stringify(account))
+        toast.success("Successful registration.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
 
-      return data
+      return data;
 
     } catch (error) {
       throw new Error('Register failed. Please try again.');
