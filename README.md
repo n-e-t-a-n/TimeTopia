@@ -10,15 +10,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/n-e-t-a-n/TimeTopia">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="./client/public/img/Time_topia_logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">TimeTopia</h3>
 
   <p align="center">
     An intuitive drag and drop schedule sharing website created with the MERN Stack
-    <br />
-    <a href="https://github.com/n-e-t-a-n/TimeTopia"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/n-e-t-a-n/TimeTopia/issues">Report Bug</a>
