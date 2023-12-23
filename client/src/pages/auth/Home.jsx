@@ -108,7 +108,7 @@ const Home = () => {
 
     const createDialogue = (fn, action) => {
         confirmAlert({
-          title: `${action} all unsaved events.`,
+          title: action === "Logout" ? `Are you sure you want to log out?` : `${action} all unsaved events.`,
           message: 'Please confirm.',
           buttons: [
             {
@@ -329,7 +329,7 @@ const Home = () => {
                     <MDBCollapse open={openNavColorSecond} navbar id='navbarColor02'>
                         <MDBNavbarNav className='mb-2 mb-lg-0'>
                         <MDBNavbarItem className='active'>
-                                    <MDBBtn outline color="danger" className='me-2' type='button'onClick={logout}>
+                                    <MDBBtn outline color="danger" className='me-2' type='button'onClick={() => createDialogue(() => {logout()}, "Logout")}>
                                         Logout
                                     </MDBBtn>
                                 </MDBNavbarItem>
