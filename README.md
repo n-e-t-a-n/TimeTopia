@@ -1,6 +1,8 @@
 <a name="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
@@ -179,3 +181,14 @@ Project Link: [https://github.com/n-e-t-a-n/TimeTopia](https://github.com/n-e-t-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="readme-top"></a>
+
+[contributors-shield]: https://img.shields.io/github/contributors/n-e-t-a-n/TimeTopia.svg?style=for-the-badge
+[contributors-url]: https://github.com/n-e-t-a-n/TimeTopia/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/n-e-t-a-n/TimeTopia.svg?style=for-the-badge
+[forks-url]: https://github.com/n-e-t-a-n/TimeTopia/network/members
+[stars-shield]: https://img.shields.io/github/stars/n-e-t-a-n/TimeTopia.svg?style=for-the-badge
+[stars-url]: https://github.com/n-e-t-a-n/TimeTopia/stargazers
+[issues-shield]: https://img.shields.io/github/issues/n-e-t-a-n/TimeTopia.svg?style=for-the-badge
+[issues-url]: https://github.com/n-e-t-a-n/TimeTopia/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/n-e-t-a-n/TimeTopia/blob/master/LICENSE.txt
