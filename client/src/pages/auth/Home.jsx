@@ -366,8 +366,6 @@ const Home = () => {
                     </MDBCollapse>
                 </MDBContainer>
             </MDBNavbar>
-
-            <button onClick={() => console.log(getUnique(existingEvents))}>TEST</button>
         </>
     );
 };
