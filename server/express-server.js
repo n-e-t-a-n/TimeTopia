@@ -41,9 +41,13 @@ app.post('/register', async (req, res) => {
     const accountExists = await collection.findOne({ "email": req.body.email });
     const usernameExists = await collection.findOne({ "username": req.body.username });
 
-    if (accountExists) return res.send({ status: 409, message: 'That email is already in use.' });
+    if (accountExists) {
+      return res.status(409).json({ status: 409, message: 'That email is already in use.' });
+    }
 
-    if (usernameExists) return res.send({ status: 409, message: 'An account with that username already exists.' });
+    if (usernameExists) {
+      return res.status(409).json({ status: 409, message: 'An account with that username already exists.' });
+    }
 
     const { password, ...user } = req.body;
 
@@ -58,7 +62,7 @@ app.post('/register', async (req, res) => {
     return res.status(500).json({ status: 500, message: 'Failed to create the account' });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: 'Internal server error' });
+    return res.status(500).json({ status: 500, message: 'Internal server error' });
   }
 });
 
