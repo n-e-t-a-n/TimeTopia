@@ -132,6 +132,22 @@ You may confirm this by typing the following commands in a terminal:
 
 5. (Optional) Add a .gitignore if you'd like to submit a pull request
 
+6. Open 3 terminals and run the following commands
+    ```sh
+    cd client
+    npm run dev
+    ```
+    ```sh
+    cd server
+    npm run start-exp
+    ```
+    ```sh
+    cd server
+    npm run start-gql
+    ```
+
+7. Visit http://localhost:5173
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
