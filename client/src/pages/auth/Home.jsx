@@ -1,8 +1,6 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
-
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../providers/AuthContext';
 import { BryntumCalendar, BryntumCalendarProjectModel } from '@bryntum/calendar-react';
@@ -254,11 +252,28 @@ const Home = () => {
                                         Logout
                                     </MDBBtn>
                                 </MDBNavbarItem>
+                        </MDBNavbarNav >
+                        <MDBNavbarNav center className='mb-2 mb-lg-0'>
+                                <MDBNavbarItem className='active ms-1'>
+                                    <MDBBtn size="sm" type='button'>
+                                        Import
+                                    </MDBBtn>
+                                </MDBNavbarItem>
+                                <MDBNavbarItem className='active ms-1'>
+                                    <MDBBtn size="sm" type='button' >
+                                        Export
+                                    </MDBBtn>
+                                </MDBNavbarItem>
                         </MDBNavbarNav>
-                        <MDBNavbarNav center className='me-auto mb-2 mb-lg-0'>
-                            <MDBNavbarItem className='active'>
+                        <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>         
+                            <MDBNavbarItem className='active ms-1'>
                                 <MDBBtn size="sm" type='button' onClick={() => saveUpdates(eventUpdates)}>
                                     Save
+                                </MDBBtn>
+                            </MDBNavbarItem>
+                            <MDBNavbarItem className='active ms-1'>
+                                <MDBBtn size="sm" type='button'>
+                                    Cancel
                                 </MDBBtn>
                             </MDBNavbarItem>
                         </MDBNavbarNav>
