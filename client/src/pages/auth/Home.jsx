@@ -3,8 +3,12 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../providers/AuthContext';
+
 import { BryntumCalendar, BryntumCalendarProjectModel } from '@bryntum/calendar-react';
 import '@bryntum/calendar/calendar.stockholm.css';
+
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 import {
   MDBNavbar,
@@ -39,6 +43,23 @@ const Home = () => {
     const project = useRef();
 
     const [events, setEvents] = useState([]);
+
+    const createDialogue = (fn, action) => {
+        confirmAlert({
+          title: `${action} all unsaved events.`,
+          message: 'Please confirm.',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () => fn
+            },
+            {
+              label: 'No',
+              onClick: () => fn
+            }
+          ]
+        });
+      };
     
     useEffect(() => {
         const fetchEvents = async () => {
@@ -267,11 +288,11 @@ const Home = () => {
                         </MDBNavbarNav>
                         <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>         
                             <MDBNavbarItem className='active ms-1'>
-                                <MDBBtn size="sm" type='button' onClick={() => saveUpdates(eventUpdates)}>
+                                <MDBBtn size="sm" type='button' onClick={() => createDialogue(saveUpdates(eventUpdates), "Save")}>
                                     Save
                                 </MDBBtn>
                             </MDBNavbarItem>
-                            <MDBNavbarItem className='active ms-1'>
+                            <MDBNavbarItem className='active ms-1' onClick={() => createDialogue(console.log("test"), "Cancel")}>
                                 <MDBBtn size="sm" type='button'>
                                     Cancel
                                 </MDBBtn>
