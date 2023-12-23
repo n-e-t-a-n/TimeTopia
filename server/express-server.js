@@ -83,6 +83,36 @@ app.post('/login', async(req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Use this endpoint to save a new user's information in the database.
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: User details for registration
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *               type: string
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *             name:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       409:
+ *         description: Email or username already in use
+ *       500:
+ *         description: Internal server error
+ */
 app.post('/register', async (req, res) => {
   try {
     const collection = await client.db('timetopia').collection('users');
