@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
 
       if (data.status === 200) {
         Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' }) 
-        setUser(account);
+        setUser(JSON.stringify(account));
       }
     } catch (error) {
       throw new Error('Login failed. Please try again.');

@@ -11,9 +11,9 @@ const Home = () => {
         "dataset": []
     };
 
-    let addIDs = [];
-    let updateIDs = [];
-    let removeIDs = [];
+    const [addIDs, setAddIDs] = useState([]);
+    const [updateIDs, setUpdateIDs] = useState([])
+    const [removeIDs, setRemoveIDs] = useState([])
 
     const [existingEvents, setExistingEvents] = useState([]);
 
@@ -112,9 +112,9 @@ const Home = () => {
     };
 
     const saveIDs = () => {
-        addIDs = eventUpdates["add"].map(obj => obj["id"])
-        updateIDs = eventUpdates["update"].map(obj => obj["id"])
-        removeIDs = eventUpdates["remove"].map(obj => obj["id"])
+        setAddIDs(eventUpdates["add"].map(obj => obj["id"]))
+        setUpdateIDs(eventUpdates["update"].map(obj => obj["id"]))
+        setRemoveIDs(eventUpdates["remove"].map(obj => obj["id"]))
     }
 
     const logUpdates = () => {
@@ -195,8 +195,6 @@ const Home = () => {
                 console.error('Error fetching events:', error);
             }
         });
-
-        console.log(removeIDs)
     }
     
     return (
@@ -213,9 +211,7 @@ const Home = () => {
             />
 
             <button onClick={logout}>Logout</button>
-            <button onClick={() => logUpdates(eventUpdates)}>Log Updates</button>
             <button onClick={() => saveUpdates(eventUpdates)}>Save Updates</button>
-            <button onClick={() => {console.log(getUnique(existingEvents))}}>Show Existing</button>
         </>
     );
 };
