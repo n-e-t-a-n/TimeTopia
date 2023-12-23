@@ -34,7 +34,34 @@ const swaggerSpec = swaggerJSDoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Log in a user
+ *     description: Use this endpoint when you want to get a session cookie for the website.
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: User credentials for login
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *       401:
+ *         description: Incorrect password
+ *       404:
+ *         description: No user found with that email
+ *       500:
+ *         description: Internal server error
+ */
 app.post('/login', async(req, res) => {
   try {
     const collection = await client.db('timetopia').collection('users');
