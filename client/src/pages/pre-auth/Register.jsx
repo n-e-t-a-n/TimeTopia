@@ -54,11 +54,10 @@ const Register = ({ setIsLogin }) => {
       <MDBCol md='6' className="order-1 order-md-1">
       <div className="text-center">
         <img
-          src="../../img/Time_topia_smol.png"
+          src="../../img/Time_topia_big.png"
           className="img-fluid p-3"
           alt= "Welcome to TimeTopia... where TIME is in the palm of YOUR hands"
         />
-        <h2 className="mt-1">where TIME is in the palm of YOUR hands</h2>
       </div>
       </MDBCol>
 
