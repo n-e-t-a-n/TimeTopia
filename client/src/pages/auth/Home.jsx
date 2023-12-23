@@ -43,6 +43,7 @@ const Home = () => {
     const project = useRef();
 
     const [events, setEvents] = useState([]);
+    const [originalEvents, setOriginalEvents] = useState([]);
 
     const createDialogue = (fn, action) => {
         confirmAlert({
@@ -51,11 +52,11 @@ const Home = () => {
           buttons: [
             {
               label: 'Yes',
-              onClick: () => fn
+              onClick: () => fn()
             },
             {
               label: 'No',
-              onClick: () => fn
+              onClick: () => {}
             }
           ]
         });
@@ -86,6 +87,8 @@ const Home = () => {
 
                 const data = await response.json();
                 setEvents(data["data"]["getEvents"]);
+
+                setOriginalEvents(data["data"]["getEvents"]);
 
                 data["data"]["getEvents"].map((obj) => {
                     setExistingEvents(existingEvents => [...existingEvents, obj["id"]])
@@ -281,12 +284,12 @@ const Home = () => {
                         </MDBNavbarNav>
                         <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>         
                             <MDBNavbarItem className='active ms-1'>
-                                <MDBBtn size="sm" type='button' onClick={() => createDialogue(saveUpdates(eventUpdates), "Save")}>
+                                <MDBBtn size="sm" type='button' onClick={() => createDialogue(() => {saveUpdates(eventUpdates)}, "Save")}>
                                     Save
                                 </MDBBtn>
                             </MDBNavbarItem>
-                            <MDBNavbarItem className='active ms-1' onClick={() => createDialogue(console.log("test"), "Cancel")}>
-                                <MDBBtn size="sm" type='button'>
+                            <MDBNavbarItem className='active ms-1'>
+                                <MDBBtn size="sm" type='button' onClick={() => createDialogue(() => {location.reload()}, "Cancel")}>
                                     Cancel
                                 </MDBBtn>
                             </MDBNavbarItem>
