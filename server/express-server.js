@@ -4,6 +4,9 @@ import client from './database/mongo.js'
 import bcrypt from 'bcrypt'
 import cors from 'cors'
 
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -12,6 +15,25 @@ app.use(cors({
   origin: ["http://localhost:5173"], 
   credentials: true 
 }))
+
+const swaggerDefinition = {
+  info: {
+    title: 'TimeTopia API',
+    version: '1.0.0',
+    description: 'API documentation for TimeTopia application endpoints',
+  },
+  basePath: '/',
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ['express-server.js'], 
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 app.post('/login', async(req, res) => {
   try {
