@@ -23,11 +23,6 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ ...params })
       })
 
-      if (!response.ok) {
-        const errorMessage = await response.json();
-        throw new Error(errorMessage.message);
-      }
-
       const data = await response.json();
       const account = data.message;
 
@@ -36,7 +31,9 @@ export const AuthProvider = ({ children }) => {
       if (data.status === 201) {
         Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' });
         setUser(account)
-      }
+      } 
+
+      return data
 
     } catch (error) {
       throw new Error('Register failed. Please try again.');
@@ -53,11 +50,6 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ ...params })
       });
   
-      if (!response.ok) {
-        const errorMessage = await response.json();
-        throw new Error(errorMessage.message);
-      }
-  
       const data = await response.json();
       const account = data.message;
 
@@ -65,6 +57,9 @@ export const AuthProvider = ({ children }) => {
         Cookies.set('authToken', JSON.stringify(account), { expires: 3, path: '/' }) 
         setUser(account);
       }
+
+      return data
+      
     } catch (error) {
       throw new Error('Login failed. Please try again.');
     }

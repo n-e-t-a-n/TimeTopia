@@ -1,6 +1,9 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import '../../pages/pre-auth/pre_auth_design/forms.css';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -60,13 +63,38 @@ const Login = ({ setIsLogin }) => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={async (values, { setSubmitting }) => {
+              onSubmit={async (values, { setSubmitting })  => {
                 try {
-                  await login(values);
-                  setSubmitting(false);
+                  const response = await login(values);
+                  
+                  if(response.status === 201){
+                    toast.success(response.message, {
+                      position: "top-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                      });
+                      
+                  } else {
+                    toast.error(response.message, {
+                      position: "top-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                      })
+                  }
                 } catch (error) {
-                  // Handle login error
                   console.error(error);
+      
+                } finally {
                   setSubmitting(false);
                 }
               }}
@@ -104,14 +132,15 @@ const Login = ({ setIsLogin }) => {
         </MDBCol>
 
       </MDBRow>
-      <MDBRow>
-        <div className="text-center py-4 px-4 px-xl-5 green-scheme">
-          <div className="text-white mb-3 mb-md-0">
-            <p>Time at the Palm of your hands</p>
-            <p>Copyright © 2023. All rights reserved.</p>
+        <MDBRow>
+          <div className="text-center py-4 px-4 px-xl-5 green-scheme">
+            <div className="text-white mb-3 mb-md-0">
+              <p>Time at the Palm of your hands</p>
+              <p>Copyright © 2023. All rights reserved.</p>
+            </div>
           </div>
-        </div>
-      </MDBRow>
+        </MDBRow>
+      <ToastContainer />
     </MDBContainer>
   );
 };

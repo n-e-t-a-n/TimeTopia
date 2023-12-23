@@ -76,27 +76,41 @@ const Register = ({ setIsLogin }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        // onSubmit={(values, { setSubmitting }) => {
-        //   register(values);
-        //   setSubmitting(false);
-        // }}
         onSubmit={async (values, { setSubmitting })  => {
           try {
             const response = await register(values);
-        
-            if (response && response.message) {
-              toast.success(response.message);
+            
+            if(response.status === 201){
+              toast.success(response.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+                
+            } else {
+              toast.error(response.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                })
             }
           } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-              toast.error(error.response.data.message);
-            } else {
-              toast.error('An error occurred');
-            }
+            console.error(error);
+            
+          } finally {
+            setSubmitting(false);
           }
-      
-          setSubmitting(false);
-          }}
+        }}
       >
         <Form>
           {/* Email input */}
