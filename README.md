@@ -103,8 +103,11 @@ You may confirm this by typing the following commands in a terminal:
    ```sh
    git clone https://github.com/n-e-t-a-n/TimeTopia.git
    ```
-2. Set NPM config to gain access to Bryntum Calendar Component
+2. Set NPM config in the client to gain access to Bryntum Calendar Component
    ```sh
+   cd TimeTopia
+   cd client
+
    npm config set "@bryntum:registry=https://npm.bryntum.com/"
    npm login --auth-type=legacy --registry=https://npm.bryntum.com/
    
@@ -122,11 +125,17 @@ You may confirm this by typing the following commands in a terminal:
 
 4. Create environment file for sensitive information
     ```env
+    cd server
+    touch .env
+
     DB_USERNAME=[YOUR_DB_USERNAME]
     DB_PASSWORD=[YOUR_DB_PASSWORD]
     ```
 
 5. (Optional) Add a .gitignore if you'd like to submit a pull request
+    ```sh
+    touch .gitignore
+    ```
 
 6. Open 3 terminals and run the following commands
     ```sh
